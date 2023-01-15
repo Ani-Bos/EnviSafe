@@ -1,5 +1,4 @@
 import React from "react";
-// import Typewriter from "typewriter-effect";
 
 const footer = () => {
   return (
@@ -109,18 +108,18 @@ const footer = () => {
           <ul className="flex justify-center space-x-5">
             <li className="hover:scale-[1.5]">
               <a href="/">
-                <img src="./images/facebook.svg" alt=" " className="h-8 "></img>
+                <img src="./Images/facebook.svg" alt=" " className="h-8 "></img>
               </a>
             </li>
             <li className="hover:scale-[1.5]">
               <a href="/">
-                <img src="./images/twitter.svg" alt=" " className="h-8"></img>
+                <img src="./Images/twitter.svg" alt=" " className="h-8"></img>
               </a>
             </li>
             <li className="hover:scale-[1.5]">
               <a href="/">
                 <img
-                  src="./images/instagram.svg"
+                  src="./Images/instagram.svg"
                   alt=" "
                   className="h-8 "
                 ></img>

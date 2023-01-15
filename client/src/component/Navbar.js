@@ -26,11 +26,11 @@ const Navbar = () => {
                 {navbar ? (
                   <img
                     h-2
-                    src="./images/i2.svg"
+                    src="./Images/i2.svg"
                     alt="hamburger-1"
                   ></img>
                 ) : (
-                  <img src="./images/i3.svg" alt="hamburger-2"></img>
+                  <img src="./Images/i3.svg" alt="hamburger-2"></img>
                 )}
               </button>
             </div>

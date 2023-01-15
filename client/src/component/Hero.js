@@ -29,7 +29,7 @@ const Hero = () => {
               <div className="grid place-items-center max-sm:hidden">
                 <img
                   className=""
-                  src="./images/i1.svg"
+                  src="./Images/i1.svg"
                   alt="React Logo"
                 />
               </div>
