@@ -96,9 +96,12 @@ app.post('/api/graph/getall', filter,async(req, res) => {
 app.post('/api/garbage/upload',upload.array('file'),filter, async(req, res) => {
     try {
   
-    // let imgurl=req.header('images')
-    // let images=imgurl.split(',')
-    // console.log(images)
+    let we=req.header('weight')
+    let wei=we.split(',')
+    console.log(wei)
+    let ca=req.header('category')
+    let cat=ca.split(',')
+    console.log(cat)
       // gfs.files.find({user:req.user.id}).toArray((err, files) => {
       //   if(err)
       //   return res.send(err)

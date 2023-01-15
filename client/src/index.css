@@ -4,3 +4,15 @@
     color: var(--primary-color);
 }
 @tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 1px;
+    height: 5px;
+  }
+::-webkit-scrollbar-track{
+    background-color: rgb(180, 179, 240);
+}  
+::-webkit-scrollbar-thumb{
+    background-color: gray;
+    border-radius: 5px;
+}

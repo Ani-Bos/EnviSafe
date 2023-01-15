@@ -10,7 +10,41 @@ import SideNavbar from './SideNavbar'
 import axios from 'axios'
 function DashBoard({time,weigh,pushhelper}) {
  
+  const [tim, setTim] = useState([])
+  const [weig, setWeig] = useState([])
+  const getchartdata=async()=>{
+    const url1="http://localhost:5001"
+    const res1= await axios.post(`${url1}/api/graph/getall`,{},{
+      headers:{
+        "auth-token":Cookies.get('auth-Tokensynex')
+      }
+    })
+    const resp=res1.data;
+setWeig(resp.weight)
 
+// resp.time.map((e)=>{
+//   arr.push(e.toLocalDateString())
+// })
+
+const getFile = fruit => {
+  return resp.time[fruit];
+ };
+
+const arr= resp.time.map(async(e,i)=>{
+const res= await new Date(getFile(i)).toLocaleString()
+return res;
+})
+const arr1=await Promise.all(arr)
+setTim(arr1)
+setHelper(!helper)
+setHelper(!helper)
+
+  }
+  useEffect(() => {
+
+    getchartdata()
+  }, [tim,weig])
+  
 
 
 const [files, setFiles] = useState([])
@@ -57,11 +91,11 @@ let navigate=useNavigate();
   
 
   const [chartData, setchartData] = useState({
-    labels:time.map((data)=>data),
+    labels:time?.map((data)=>data),
     
     datasets:[
       {
-        data:weigh.map((data)=>data),
+        data:weigh?.map((data)=>data),
         label:"Carbon Emission"
       },
     
@@ -73,7 +107,8 @@ let navigate=useNavigate();
     const handleweight=(e)=>{
 setWeight(e.target.value)
     }
-  
+  const [we, setWe] = useState([])
+  const [cat, setCat] = useState([])
   const handleadd=()=>{
       const dataget=data;
       var a=document.getElementById('file').files
@@ -82,10 +117,19 @@ setWeight(e.target.value)
       let filr=([...fil,a[0]])
       setFiles(filr)
       let url=window.URL.createObjectURL(a[0]);
-      dataget.push({url,weight});
+      const temp=we;
+      let t=[...temp,weight];
+      setWe(t);
+      const temp1=cat;
+      let t1=[...temp1,category];
+      setCat(t1);
+
+
+      dataget.push({url,weight,category});
       setData(dataget)
       setWeight(0);
 
+      setCategory("")
       setHelper(!helper);
       setHelper(!helper)
      
@@ -110,7 +154,8 @@ setWeight(e.target.value)
     const submit=await axios.post(`${url}/api/garbage/upload`,formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "images":arr1,
+        "weight":we,
+        "category":cat,
         "auth-token":Cookies.get("auth-Tokensynex")
       },
     })
@@ -121,7 +166,7 @@ setWeight(e.target.value)
       setFiles([])
       
   }
-  
+  const [category, setCategory] = useState("")
   return (
 <>
 <div className="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden" id="modal">
@@ -159,7 +204,7 @@ setWeight(e.target.value)
                 <div> <h1 className='mb-5 font-bold'>Enter Todays Garbage</h1></div> 
 <div>{
   data.map((e,i)=>{
-return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight}/></div>
+return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.category}/></div>
   })
   
   
@@ -180,6 +225,12 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
  </div>
  <input value={weight} onChange={handleweight} className='p-1 border rounded-md border-black' type="text" name="weight" id="weight" />
 </div>
+<div>
+ <div className='my-5'>
+   Category
+ </div>
+ <input value={category} onChange={(e)=>{setCategory(e.target.value)}} className='p-1 border rounded-md border-black' type="text" name="weight" id="weight" />
+</div>
        </div>
          
            <div className='my-3'>
@@ -198,13 +249,13 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                   <div className="rounded-full m-auto w-[100px]">
                         <img className='w-[100%] rounded-full' src={Cookies.get('dp')} alt="" />
                   </div>
-                  <h2>Name</h2>
+                  <h2 className='font-bold text-lg'>Name</h2>
                   <div>{user?.name}</div>
-                  <h2>Email</h2>
+                  <h2 className='font-bold text-lg'>Email</h2>
                   <div>{user?.email}</div>
-                  <h2>Address</h2>
+                  <h2 className='font-bold text-lg'>Address</h2>
                   <div>{user?.address}</div>
-                  <h2>Phone</h2>
+                  <h2 className='font-bold text-lg'>Phone</h2>
                   <div>{user?.phone}</div>
                </div>
                
@@ -214,7 +265,10 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                 </div>
               
             </div>
+            <div className='font-bold text-lg text-center my-3'>Analytics</div>
+            <hr className='my-3 h-[3px]'/>
             <div className='grid grid-cols-2'>
+              
                     <div className='w-[100%]'>
                     <BarChart chartData={chartData}/>
                     </div>
