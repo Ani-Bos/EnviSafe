@@ -189,6 +189,7 @@ setWeight(e.target.value)
       setWe([])
       setData([])
       setFiles([])
+      setCategory([])
       setload();
   }
   return (
