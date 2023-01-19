@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Garbage({fileurl,weight,category}) {
+function Garbage({fileurl,weight}) {
   return (
     <div>
         <div className='w-[100px]'>
@@ -11,10 +11,7 @@ function Garbage({fileurl,weight,category}) {
             {
                 weight
             }
-          <div className='font-bold text-lg'>Category</div>
-            {
-                category
-            }
+         
         </div>
     </div>
   )

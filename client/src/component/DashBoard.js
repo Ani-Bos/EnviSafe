@@ -36,14 +36,13 @@ return res;
 })
 const arr1=await Promise.all(arr)
 setTim(arr1)
-setHelper(!helper)
-setHelper(!helper)
+
 
   }
-  useEffect(() => {
+  // useEffect(() => {
 
-    getchartdata()
-  }, [tim,weig])
+  //   getchartdata()
+  // }, [tim,weig])
   
 
 
@@ -103,13 +102,14 @@ let navigate=useNavigate();
   })
   const [data, setData] = useState([])
   const [weight, setWeight] = useState(0)
-  const [helper, setHelper] = useState(false)
+
     const handleweight=(e)=>{
 setWeight(e.target.value)
     }
   const [we, setWe] = useState([])
-  const [cat, setCat] = useState([])
-  const handleadd=()=>{
+  const [category, setCategory] = useState([])
+  
+  const handleadd=async()=>{
       const dataget=data;
       var a=document.getElementById('file').files
       console.log(a)
@@ -120,53 +120,64 @@ setWeight(e.target.value)
       const temp=we;
       let t=[...temp,weight];
       setWe(t);
-      const temp1=cat;
-      let t1=[...temp1,category];
-      setCat(t1);
+    
 
 
-      dataget.push({url,weight,category});
+      dataget.push({url,weight});
       setData(dataget)
       setWeight(0);
+      let formData=new FormData();
+      formData.append('file',a[0]);
 
-      setCategory("")
-      setHelper(!helper);
-      setHelper(!helper)
-     
+      const res=await axios.post("http://127.0.0.1:5000/predict",formData,{
+        headers:{
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      const resp=res.data;
+      console.log(resp);
+      let arr=category;
+      arr.push(resp);
+      setCategory(arr);
+    
   }
+
   const handlefinalSubmit=async()=>{
     const url="http://localhost:5001"
-    const getFile = fruit => {
-      return files[fruit];
-     };
+    // const getFile = fruit => {
+    //   return files[fruit];
+    //  };
   
-   const arr= files.map(async(e,i)=>{
-    const res= await window.URL.createObjectURL( getFile(i))
-    return res;
-    })
-    const arr1=await Promise.all(arr)
-    console.log(arr1)
+  //  const arr= files.map(async(e,i)=>{
+  //   const res= await window.URL.createObjectURL( getFile(i))
+  //   return res;
+  //   })
+  //   const arr1=await Promise.all(arr)
+  //   console.log(arr1)
     let formData = new FormData();
     for(var prop in files)
           formData.append("file",files[prop]);
-   
+   for(var pros in we)
+    formData.append('weight',we[pros])
+   for(var props in category)
+    formData.append('category',category[props])
 
     const submit=await axios.post(`${url}/api/garbage/upload`,formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "weight":we,
-        "category":cat,
+        
         "auth-token":Cookies.get("auth-Tokensynex")
       },
     })
       const res=submit.data;
       console.log(res)
+    formData = new FormData();
       console.log(files)
+      setWe([])
       setData([])
       setFiles([])
       
   }
-  const [category, setCategory] = useState("")
   return (
 <>
 <div className="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden" id="modal">
@@ -226,10 +237,8 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
  <input value={weight} onChange={handleweight} className='p-1 border rounded-md border-black' type="text" name="weight" id="weight" />
 </div>
 <div>
- <div className='my-5'>
-   Category
- </div>
- <input value={category} onChange={(e)=>{setCategory(e.target.value)}} className='p-1 border rounded-md border-black' type="text" name="weight" id="weight" />
+
+ 
 </div>
        </div>
          
@@ -273,7 +282,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                     <BarChart chartData={chartData}/>
                     </div>
                     <div className='w-[100%]'>
-<PieChart chartData={chartData}/>
+                    <PieChart chartData={chartData}/>
                     </div>
                 </div>
           </div>

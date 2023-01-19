@@ -83,7 +83,12 @@ app.post('/api/graph/getall', filter,async(req, res) => {
   return res;
   })
   const arr3=await Promise.all(arr2)
-  res.json({time:arr1,weight:arr3})
+ const arr4= getall.map(async(e,i)=>{
+  const res= await getFile(i).category
+  return res;
+  })
+  const arr5=await Promise.all(arr4)
+  res.json({time:arr1,weight:arr3,category:arr5})
   
  } catch (error) {
   console.log(error)
@@ -96,12 +101,6 @@ app.post('/api/graph/getall', filter,async(req, res) => {
 app.post('/api/garbage/upload',upload.array('file'),filter, async(req, res) => {
     try {
   
-    let we=req.header('weight')
-    let wei=we.split(',')
-    console.log(wei)
-    let ca=req.header('category')
-    let cat=ca.split(',')
-    console.log(cat)
       // gfs.files.find({user:req.user.id}).toArray((err, files) => {
       //   if(err)
       //   return res.send(err)
@@ -128,15 +127,20 @@ app.post('/api/garbage/upload',upload.array('file'),filter, async(req, res) => {
     //   })
     //   const bolc=await Promise.all(arr)
 
-console.log(req.files)
+console.log(req.body.weight)
+const initialValue = 0;
+const sumweight = req.body.weight.reduce(
+  (accumulator, currentValue) => accumulator + parseInt(currentValue),
+  initialValue
+);
 const getFile = fruit => {
   return req.files[fruit];
  };
         // const category=['a','b','c','d','e','f']
-        // const weightmultiplier=[2,3,4,5,6,7]
-        const weigh=Math.floor(Math.random() * 100) + 10;
-        // const arr=[];
-        // const arr1=[];
+  //       // const weightmultiplier=[2,3,4,5,6,7]
+        // const weigh=Math.floor(Math.random() * 100) + 10;
+  //       // const arr=[];
+  //       // const arr1=[];
         let arrtemp=req.files
        const arr= arrtemp.map(async (file,i)=>{
                const res=await getFile(i).filename
@@ -154,8 +158,8 @@ const getFile = fruit => {
 
         const garbage=await Garbage.create({
             user:req.user.id,
-            category:[],
-            weight:weigh,
+            category:req.body.category,
+            weight:sumweight,
             filename:arr1,
             fileid:arr3
         })
