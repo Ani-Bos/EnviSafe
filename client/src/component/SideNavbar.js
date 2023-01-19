@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 const SideNav = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const Menus = [
     { title: "Dashboard", src: "Chart_fill" },
     { title: "Inbox", src: "Chat" },

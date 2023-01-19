@@ -13,7 +13,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <Link to="/">
               <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold tracking-tight text-green-400">
-                Envy<span className="text-primary">Safe</span>
+                Envi<span className="text-primary">Safe</span>
               </h1>
               {/* <img className="h-20 w-20 self-center" src="./images/img1.svg" alt="" /> */}
             </Link>

@@ -127,12 +127,18 @@ app.post('/api/garbage/upload',upload.array('file'),filter, async(req, res) => {
     //   })
     //   const bolc=await Promise.all(arr)
 
-console.log(req.body.weight)
-const initialValue = 0;
-const sumweight = req.body.weight.reduce(
-  (accumulator, currentValue) => accumulator + parseInt(currentValue),
-  initialValue
-);
+console.log(typeof(req.body.weight))
+let sumweight=parseInt(req.body.weight);
+if(typeof(req.body.weight)==='object'){
+  const initialValue = 0;
+  sumweight = req.body.weight.reduce(
+    (accumulator, currentValue) => accumulator + parseInt(currentValue),
+    initialValue
+  );
+}
+
+
+console.log(typeof(sumweight))
 const getFile = fruit => {
   return req.files[fruit];
  };

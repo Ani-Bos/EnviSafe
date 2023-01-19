@@ -8,7 +8,7 @@ import {useNavigate} from 'react-router-dom'
 import SideNavbar from './SideNavbar'
 // import{useState} from 'react'
 import axios from 'axios'
-function DashBoard({time,weigh,pushhelper}) {
+function DashBoard({time,weigh,pushhelper,categories,setload}) {
  
   const [tim, setTim] = useState([])
   const [weig, setWeig] = useState([])
@@ -89,7 +89,7 @@ let navigate=useNavigate();
  
   
 
-  const [chartData, setchartData] = useState({
+  const chartData={
     labels:time?.map((data)=>data),
     
     datasets:[
@@ -99,7 +99,20 @@ let navigate=useNavigate();
       },
     
     ],
-  })
+  }
+  
+
+  const categoryData={
+    labels:categories?.map((data)=>data.cat),
+    
+    datasets:[
+      {
+        data:categories?.map((data)=>data.count),
+        label:"Category"
+      },
+    
+    ],
+  }
   const [data, setData] = useState([])
   const [weight, setWeight] = useState(0)
 
@@ -176,7 +189,7 @@ setWeight(e.target.value)
       setWe([])
       setData([])
       setFiles([])
-      
+      setload();
   }
   return (
 <>
@@ -282,7 +295,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                     <BarChart chartData={chartData}/>
                     </div>
                     <div className='w-[100%]'>
-                    <PieChart chartData={chartData}/>
+                    <PieChart chartData={categoryData}/>
                     </div>
                 </div>
           </div>
