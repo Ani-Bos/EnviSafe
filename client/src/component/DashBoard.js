@@ -296,7 +296,10 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                     <BarChart chartData={chartData}/>
                     </div>
                     <div className='w-[100%]'>
-                    <PieChart chartData={categoryData}/>
+                      <div className='w-[60%] m-auto'>
+                      <PieChart chartData={categoryData}/>
+                      </div>
+                    
                     </div>
                 </div>
           </div>
