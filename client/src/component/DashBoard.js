@@ -177,7 +177,7 @@ setWeight(e.target.value)
           setEaddress(e.target.value)
         }} type="text" className="w-full bg-gray-100 p-2 mt-2 mb-3" />
         <label>Phone</label>
-        <input value={ephone} onChange={(e)=>{ setEphone(e.target.value)}} type="text" className="w-full bg-gray-100 p-2 mt-2 mb-3" />
+        <input value={ephone} onChange={(e)=>{ setEphone(e.target.value)}} type="number" className="w-full bg-gray-100 p-2 mt-2 mb-3" />
       </div>
       <div className="bg-gray-200 px-4 py-3 text-right">
         <button type="button" className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2" onClick={()=>{document.getElementById('modal').classList.toggle('hidden')}}><i className="fas fa-times"></i> Close</button>
@@ -242,6 +242,9 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                   <div className="rounded-full m-auto w-[100px]">
                         <img className='w-[100%] rounded-full' src={Cookies.get('dp')} alt="" />
                   </div>
+                  {
+                  (!user?.address || !user?.phone) && 
+                  <div className='text-center font-bold my-2'>Complete your profile</div>}
                   <h2 className='font-bold text-lg'>Name</h2>
                   <div>{user?.name}</div>
                   <h2 className='font-bold text-lg'>Email</h2>
@@ -260,7 +263,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
             </div>
             <div className='font-bold text-lg text-center my-3'>Analytics</div>
             <hr className='my-3 h-[3px]'/>
-            <div className='grid grid-cols-2'>
+         { time?.length!=0 ?  <div className='grid grid-cols-2'>
               
                     <div className='w-[100%]'>
                     <BarChart chartData={chartData}/>
@@ -271,7 +274,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                       </div>
                     
                     </div>
-                </div>
+                </div>: <div className='text-center font-bold text-xl my-5'>No Records Found</div> }
           </div>
         
     </div>
