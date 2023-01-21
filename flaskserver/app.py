@@ -51,41 +51,37 @@ def predict():
     # image = request.args.get('image')
     path="./images/"+image.filename
     image.save(path)
-    img=load_img(path,target_size=(160,160))
-    print(img)
+    img=load_img(path,target_size=(224,224))
     i=img_to_array(img)/255
-    print(i)
+
     input_arr=np.array([i])
-    print(input_arr)
+    input_arr.shape
     pred = np.argmax(model.predict(input_arr), axis=1)
-    pred = pred.reshape((1, 1))[0][0]
-    print(pred)
-    if(pred==0):
+    
+    if pred==0:
         return "battery"
-    elif(pred==1):
-        return "biological"
-    elif(pred == 2):
-        return "brown-glass"
-    elif(pred == 3):
-        return "cardboard"
-    elif(pred==4):
-        return "clothes"
-    elif(pred==5):
-        return "green-glass"
-    elif(pred==6):
-        return "metal"
-    elif(pred==7):
-        return "paper"
-    elif(pred==8):
-        return "plastic"
-    elif(pred==9):
-        return "shoes"
-    elif(pred==10):
-        return "trash"
-    elif(pred==11):
-        return "white-glass"
-    print(pred)
-    return "Incorrect"
+    elif pred==1:
+        return "biological" 
+    elif pred==2:
+        return "brown-glass" 
+    elif pred==3:
+        return "cardboard" 
+    elif pred==4:
+        return "clothes" 
+    elif pred==5:
+        return "green-glass" 
+    elif pred==6:
+        return "metal" 
+    elif pred==7:
+        return "paper" 
+    elif pred==8:
+        return "plastic" 
+    elif pred==9:
+        return "shoes" 
+    elif pred==10:
+        return "trash" 
+    else:
+        return "white-glass" 
 
 
 if __name__ == '__main__':

@@ -121,7 +121,7 @@ setWeight(e.target.value)
     }
   const [we, setWe] = useState([])
   const [category, setCategory] = useState([])
-  
+  const [helper, setHelper] = useState(true)
   const handleadd=async()=>{
       const dataget=data;
       var a=document.getElementById('file').files
@@ -134,11 +134,6 @@ setWeight(e.target.value)
       let t=[...temp,weight];
       setWe(t);
     
-
-
-      dataget.push({url,weight});
-      setData(dataget)
-      setWeight(0);
       let formData=new FormData();
       formData.append('file',a[0]);
 
@@ -149,6 +144,13 @@ setWeight(e.target.value)
       });
       const resp=res.data;
       console.log(resp);
+      
+
+
+      dataget.push({url,weight,cate:resp});
+      setData(dataget)
+      setHelper(!helper)
+      setWeight(0);
       let arr=category;
       arr.push(resp);
       setCategory(arr);
@@ -229,7 +231,7 @@ setWeight(e.target.value)
                 <div> <h1 className='mb-5 font-bold'>Enter Todays Garbage</h1></div> 
 <div>{
   data.map((e,i)=>{
-return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.category}/></div>
+return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.cate}/></div>
   })
   
   
