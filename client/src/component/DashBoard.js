@@ -1,6 +1,5 @@
 import { useState,useEffect } from 'react' 
 import Garbage from './Garbage'
-import { Data,Data1 } from '../utils/data'
 import BarChart from './BarChart'
 import PieChart from './PieChart'
 import Cookies from 'js-cookie'
@@ -8,44 +7,8 @@ import {useNavigate} from 'react-router-dom'
 import SideNavbar from './SideNavbar'
 // import{useState} from 'react'
 import axios from 'axios'
-function DashBoard({time,weigh,pushhelper,categories,setload}) {
+function DashBoard({time,weigh,categories,setload}) {
  
-  const [tim, setTim] = useState([])
-  const [weig, setWeig] = useState([])
-  const getchartdata=async()=>{
-    const url1="http://localhost:5001"
-    const res1= await axios.post(`${url1}/api/graph/getall`,{},{
-      headers:{
-        "auth-token":Cookies.get('auth-Tokensynex')
-      }
-    })
-    const resp=res1.data;
-setWeig(resp.weight)
-
-// resp.time.map((e)=>{
-//   arr.push(e.toLocalDateString())
-// })
-
-const getFile = fruit => {
-  return resp.time[fruit];
- };
-
-const arr= resp.time.map(async(e,i)=>{
-const res= await new Date(getFile(i)).toLocaleString()
-return res;
-})
-const arr1=await Promise.all(arr)
-setTim(arr1)
-
-
-  }
-  // useEffect(() => {
-
-  //   getchartdata()
-  // }, [tim,weig])
-  
-
-
 const [files, setFiles] = useState([])
   const url='http://localhost:5001/api/auth'
 
@@ -117,6 +80,11 @@ let navigate=useNavigate();
   const [weight, setWeight] = useState(0)
 
     const handleweight=(e)=>{
+      if(e.target.value==="")
+{
+  console.log("weight cannot be empty")
+}
+      else if(e.target.value>=0)
 setWeight(e.target.value)
     }
   const [we, setWe] = useState([])
@@ -248,9 +216,9 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
      </div>   
 <div>
  <div className='my-5'>
-   Weight
+   Weight in <strong>Kg</strong>
  </div>
- <input value={weight} onChange={handleweight} className='p-1 border rounded-md border-black' type="text" name="weight" id="weight" />
+ <input value={weight} onChange={handleweight} className='p-1 border rounded-md border-black' type="number" step="0.01" name="weight" id="weight" />
 </div>
 <div>
 

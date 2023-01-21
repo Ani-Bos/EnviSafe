@@ -7,7 +7,7 @@ function Garbage({fileurl,weight,category}) {
             <img src={fileurl} alt="pic"  />
         </div>
         <div className='p-5'>
-          <div className='font-bold text-lg'>Approx. Weight</div>
+          <div className='font-bold text-lg'>Approx. Weight in Kg</div>
             {
                 weight
             }

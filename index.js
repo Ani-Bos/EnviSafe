@@ -100,39 +100,12 @@ app.post('/api/graph/getall', filter,async(req, res) => {
 // @desc  Uploads file to DB
 app.post('/api/garbage/upload',upload.array('file'),filter, async(req, res) => {
     try {
-  
-      // gfs.files.find({user:req.user.id}).toArray((err, files) => {
-      //   if(err)
-      //   return res.send(err)
-//       const geturl = fruit => {
-//         return images[fruit];
-//        };
-//        const fileurl= images.map(async (file,i)=>{
-//         const res=await axios.get(`http://127.0.0.1:5000/predict?image=${geturl(i)}`)
-//         const resp=res.data;
-//         return resp;
-//  })
-//  const obj=await Promise.all(fileurl)
-//  console.log(obj);
-      //     res.json({files: files });
-        
-      // });
-    //   const getblob = fruit => {
-    //     return getall[fruit];
-    //    };
-    
-    //  const bol= req.files.map(async(e,i)=>{
-    //   const res= await window.URL.createObjectURL(getFile(i))
-    //   return res;
-    //   })
-    //   const bolc=await Promise.all(arr)
 
-console.log(typeof(req.body.weight))
-let sumweight=parseInt(req.body.weight);
+let sumweight=parseFloat(req.body.weight);
 if(typeof(req.body.weight)==='object'){
   const initialValue = 0;
   sumweight = req.body.weight.reduce(
-    (accumulator, currentValue) => accumulator + parseInt(currentValue),
+    (accumulator, currentValue) => accumulator + parseFloat(currentValue),
     initialValue
   );
 }
@@ -142,11 +115,6 @@ console.log(typeof(sumweight))
 const getFile = fruit => {
   return req.files[fruit];
  };
-        // const category=['a','b','c','d','e','f']
-  //       // const weightmultiplier=[2,3,4,5,6,7]
-        // const weigh=Math.floor(Math.random() * 100) + 10;
-  //       // const arr=[];
-  //       // const arr1=[];
         let arrtemp=req.files
        const arr= arrtemp.map(async (file,i)=>{
                const res=await getFile(i).filename
@@ -170,23 +138,11 @@ const getFile = fruit => {
             fileid:arr3
         })
 
-  //       const geturl = fruit => {
-  //         return arr1[fruit];
-  //        };
-  //        const fileurl= arr1.map(async (file,i)=>{
-  //         const res=await axios.get(`http://127.0.0.1:5000/predict?image=http://localhost:5001/image/${geturl(i)}`)
-  //         const resp=res.data;
-  //         return resp;
-  //  })
-  //  const obj=await Promise.all(fileurl)
-  //  console.log(obj);
         res.json({garbage})
     } catch (error) {
         console.log(error)
         res.status(500).send("Internal Server Error");
     }
-
-// console.log(req.files)
 
 });
 

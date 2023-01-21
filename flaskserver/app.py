@@ -25,6 +25,9 @@ import numpy as np
 import sys
 from PIL import Image
 from flask_cors import CORS
+
+import os
+
 sys.modules['Image'] = Image 
 # import Image
 # from sklearn.metrics import classification_report, confusion_matrix
@@ -57,7 +60,7 @@ def predict():
     input_arr=np.array([i])
     input_arr.shape
     pred = np.argmax(model.predict(input_arr), axis=1)
-    
+    os.remove(path)
     if pred==0:
         return "battery"
     elif pred==1:
