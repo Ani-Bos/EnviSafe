@@ -57,6 +57,15 @@ const upload = multer({ storage });
 app.use('/api/auth',require('./routes/auth'))
 // @route GET /
 // @desc Loads form
+app.post('/api/garbage/getdata',filter,async(req,res)=>{
+  try {
+    const getall=await Garbage.find({user:req.user.id});
+    res.json(getall);
+  } catch (error) {
+    console.log(error)
+    res.status(500).send("internal server error");
+  }
+})
 app.get('/api/garbage/getall', filter,(req, res) => {
   gfs.files.find({user:req.user.id}).toArray((err, files) => {
     if(err)
@@ -148,8 +157,8 @@ const getFile = fruit => {
 
 // @route GET /files
 // @desc  Display all files in JSON
-app.get('/files', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
+app.get('/files',filter, (req, res) => {
+  gfs.files.find({user:req.user.id}).toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
       return res.status(404).json({

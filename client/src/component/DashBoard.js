@@ -5,6 +5,8 @@ import PieChart from './PieChart'
 import Cookies from 'js-cookie'
 import {useNavigate} from 'react-router-dom'
 import SideNavbar from './SideNavbar'
+
+
 // import{useState} from 'react'
 import axios from 'axios'
 function DashBoard({time,weigh,categories,setload}) {
@@ -46,7 +48,7 @@ let navigate=useNavigate();
       navigate('/login')
     console.log(time,weigh)
       getuser();
-      
+     // eslint-disable-next-line
   }, [])
   
  
@@ -94,6 +96,11 @@ setWeight(e.target.value)
       const dataget=data;
       var a=document.getElementById('file').files
       console.log(a)
+      if(a.length===0)
+      {
+        alert('Cannot Add No data')
+        return;
+      }
       const fil=files;
       let filr=([...fil,a[0]])
       setFiles(filr)
@@ -137,6 +144,11 @@ setWeight(e.target.value)
   //   })
   //   const arr1=await Promise.all(arr)
   //   console.log(arr1)
+  if(we.length===0 || files.length===0)
+  {
+    alert('Cannot Submit No data')
+    return;
+  }
     let formData = new FormData();
     for(var prop in files)
           formData.append("file",files[prop]);
@@ -263,7 +275,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
             </div>
             <div className='font-bold text-lg text-center my-3'>Analytics</div>
             <hr className='my-3 h-[3px]'/>
-         { time?.length!=0 ?  <div className='grid grid-cols-2'>
+         { time?.length!==0 ?  <div className='grid grid-cols-2'>
               
                     <div className='w-[100%]'>
                     <BarChart chartData={chartData}/>
@@ -278,6 +290,7 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
           </div>
         
     </div>
+    
     </>
   )
 }

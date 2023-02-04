@@ -1,18 +1,16 @@
-import React from 'react'
-import BarChart from './component/BarChart'
-import { Data,Data1 } from './utils/data'
-import{useState,useEffect} from 'react'
-import axios from'axios'
+import axios from 'axios'
 import Cookies from 'js-cookie'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Activity from './component/Activity'
 import DashBoard from './component/DashBoard'
-import Navbar from './component/Navbar'
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import Landing from './component/Landing'
-import Signup from './component/Signup'
 import Login from './component/Login'
+import Navbar from './component/Navbar'
 import Password from './component/Password'
+import Signup from './component/Signup'
 function App() {
-  const [helper, setHelper] = useState(false)
+  
   const [time, setTime] = useState([])
   const [weight, setWeight] = useState([])
   const [category, setCategory] = useState([{cat:"battery",count:0},{cat:"biological",count:0},{cat:"brown-glass",count:0},{cat:"cardboard",count:0},{cat:"clothes",count:0},{cat:"green-glass",count:0},{cat:"metal",count:0},{cat:"paper",count:0},{cat:"plastic",count:0},{cat:"shoes",count:0},{cat:"trash",count:0},{cat:"white-glass",count:0},])
@@ -26,12 +24,10 @@ function App() {
     const resp=res1.data;
 setWeight(resp.weight)
 console.log(resp)
-// resp.time.map((e)=>{
-//   arr.push(e.toLocalDateString())
-// })
+
 
 let catt=category;
-// setCategory([])
+
 for(var i in resp.category){
   for(var j in resp.category[i])
   {
@@ -91,7 +87,7 @@ setTime(arr1)
 const [help, setHelp] = useState(false)
 useEffect(() => {
 getchartdata()
-console.log("shbcvs")
+// eslint-disable-next-line
 }, [help])
 const setload=()=>{
   setCategory([{cat:"battery",count:0},{cat:"biological",count:0},{cat:"brown-glass",count:0},{cat:"cardboard",count:0},{cat:"clothes",count:0},{cat:"green-glass",count:0},{cat:"metal",count:0},{cat:"paper",count:0},{cat:"plastic",count:0},{cat:"shoes",count:0},{cat:"trash",count:0},{cat:"white-glass",count:0},])
@@ -106,6 +102,7 @@ const setload=()=>{
   <Route exact path='/login' element={<Login />} />
   <Route exact path='/signup' element={<Signup/>} />
   <Route exact path='/forgot' element={<Password/>} />
+  <Route exact path='/activity' element={<Activity/>} />
   <Route exact path='/dashboard' element={<DashBoard  time={time} weigh={weight} categories={category} setload={setload}/>} />
 </Routes>
 {/* <DashBoard/> */}

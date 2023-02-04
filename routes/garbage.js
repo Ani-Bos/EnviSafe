@@ -15,33 +15,7 @@ router.get("/fetchallinfo", fetchuser, async (req, res) => {
   }
 });
 //Route 2 to add new notes in User detail using :POST "/api/notes/addnote".login requiered
-router.post(
-  "/addinfo",
-  fetchuser,
-  
-  async (req, res) => {
-    try {
-      const {  } = req.body;
-      // if there are error,return bad request and the error
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      const note = new Notes({
-        title,
-        description,
-        tag,
-        user: req.user.id,
-      });
-      const savedNote = await note.save();
 
-      res.json(savedNote);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Internal Server Error Occured");
-    }
-  }
-);
 //Route 3 to update  notes in User detail using :PUT: "/api/notes/updatenote".login requiered
 // router.put("/updatenote/:id", fetchuser, async (req, res) => {
 //   const { title, description, tag } = req.body;
