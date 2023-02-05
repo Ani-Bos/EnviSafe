@@ -48,13 +48,15 @@ let navigate=useNavigate();
       navigate('/login')
     console.log(time,weigh)
       getuser();
+      setload();
+    
      // eslint-disable-next-line
   }, [])
   
  
   
 
-  const chartData={
+  let chartData={
     labels:time?.map((data)=>data),
     
     datasets:[
@@ -67,7 +69,7 @@ let navigate=useNavigate();
   }
   
 
-  const categoryData={
+ let categoryData={
     labels:categories?.map((data)=>data.cat),
     
     datasets:[

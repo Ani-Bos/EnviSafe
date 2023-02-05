@@ -64,7 +64,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/Signup"
-                  class="inline-block rounded-md  px-6 outline-1 py-1.5 text-base font-semibold leading-7 text-black shadow-sm ring-1 ring-green-600 bg-white hover:bg-green-600 hover:text-white drop-shadow-sm hover:ring-white"
+                  className="inline-block rounded-md  px-6 outline-1 py-1.5 text-base font-semibold leading-7 text-black shadow-sm ring-1 ring-green-600 bg-white hover:bg-green-600 hover:text-white drop-shadow-sm hover:ring-white"
                 >
                   Sign Up
                 </Link>

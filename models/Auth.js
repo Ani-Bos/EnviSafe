@@ -15,11 +15,11 @@ const { Schema } = mongoose;
    },
    phone:{
     type:Number,
-    default:null
+    default:0
    },
    address:{
     type:String,
-    default:null
+    default:""
    },
    createdAt:{
        type:Date,

@@ -16,12 +16,12 @@ const Hero = () => {
                   jjjdkks
                     </span>
                 </h1>
-                <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-lg dark:text-gray-400">
+                <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-lg dark:text-gray-400">
                   Lorem ipsum dolor sit amet.
                 </p>
                <a
                   href="/"
-                  class="inline-block rounded-md  px-6 outline-1 py-1.5 text-base font-semibold leading-7 text-black shadow-sm ring-1 ring-green-600 bg-white hover:bg-green-600 hover:text-white drop-shadow-sm hover:ring-white"
+                  className="inline-block rounded-md  px-6 outline-1 py-1.5 text-base font-semibold leading-7 text-black shadow-sm ring-1 ring-green-600 bg-white hover:bg-green-600 hover:text-white drop-shadow-sm hover:ring-white"
                 >
                   Get started
                 </a>

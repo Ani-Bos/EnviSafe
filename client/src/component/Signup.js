@@ -1,33 +1,90 @@
-import React from "react";
-import {signinwithgoogle} from '../firebase-config'
+import React, { useState } from "react";
+
+import {auth,provider } from "../firebase-config";
+import { createUserWithEmailAndPassword,signInWithPopup } from "firebase/auth";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 const Signup = () => {
+  let navigate=useNavigate()
+  const [credential, setCredential] = useState({ email: "",username:"", password: "" })
+  const handleSignUp =async () => {
+
+   let userCr=await createUserWithEmailAndPassword(auth, credential.email, credential.password)
+   console.log(userCr.user)  
+   const email=userCr.user.email
+   const name=credential.username
+   const profilepic=userCr.user.photoURL;
+     Cookies.set('dp', profilepic?profilepic:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsGjDJxNoPQgkbqeBPV0yYH7CNMJwficf9hw&usqp=CAU")
+     Cookies.set('email', email)
+     Cookies.set('name',name)
+  
+        const url="http://localhost:5001/api/auth";
+     const resp=await axios.post(`${url}/createUser`,{email:credential.email,name:credential.username})
+const res=resp.data
+     Cookies.set('auth-Tokensynex',res.authToken)
+      navigate('/dashboard')
+   
+  }
+  const handleSign = (e) => {
+    setCredential({ ...credential, [e.target.name]: e.target.value });
+  }
+
+  const signinwithgoogle= async()=>{
+    const signin=await signInWithPopup(auth,provider);
+    const email=signin.user.email
+    const name=signin.user.displayName;
+    const profilepic=signin.user.photoURL;
+      Cookies.set('dp', profilepic)
+      Cookies.set('email', email)
+      Cookies.set('name',name)
+    
+     const url="http://localhost:5001/api/auth"
+      const user=await axios.post(`${url}/createUser`,{email:email,name:name});
+      const res=user.data;
+      console.log(res)
+      if(res.mark)
+      {
+        const login=await axios.post(`${url}/login`,{email:Cookies.get('email')});
+        const data=login.data;
+        Cookies.set('auth-Tokensynex',data.authToken)
+        window.location.replace('/dashboard')
+        return;
+      }
+      Cookies.set('auth-Tokensynex',res.authToken)
+      
+       
+      
+    navigate('/dashboard');
+    }
+    
   return (
-             <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+    <section className="bg-gray-50 min-h-screen flex items-center justify-center">
       <div
         className="bg-gray-200 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center"
       >
         <div className="">
-          <h2 className="font-bold text-2xl text-[#002D74] text-center">Login</h2>
+          <h2 className="font-bold text-2xl text-[#002D74] text-center">SignUp</h2>
           <p className="text-xs mt-4 text-[#002D74] text-center">
             If you are already a member, easily log in
           </p>
-          <form action="" className="flex flex-col gap-4 ">
-             <input className="p-2 mt-8  rounded-xl border" type="email" name="email" placeholder="Email" required></input>
+          <div className="flex flex-col gap-4 ">
+            <input value={credential.email} onChange={(e)=>{handleSign(e)}} className="p-2 mt-8  rounded-xl border" type="email" name="email" placeholder="Email" ></input>
+            <input value={credential.username} onChange={(e)=>{handleSign(e)}} className="p-2 mt rounded-xl border" type="name" name="username" placeholder="username" ></input>
 
-            <input className="p-2 mt rounded-xl border" type="name" name="username" placeholder="username" required></input>
-            
-             <div className="relative">
-            
-          <input className="p-2 rounded-xl mr-20 border w-full" type="password" name="password" placeholder="Password"></input>
-        </div>
-        <button className="bg-[#27AE60] rounded-xl text-white py-2 hover:scale-105 duration-300">SignUp</button>
-          </form>
-          
-        <div className="mt-6 grid grid-cols-3 items-center text-gray-400">
-        <hr className="border-gray-400"></hr>
-        <p className="text-center text-sm">OR</p>
-        <hr className="border-gray-400"></hr>
-      </div>
+
+            <div className="relative">
+
+              <input value={credential.password} onChange={(e)=>{handleSign(e)}} className="p-2 rounded-xl mr-20 border w-full" type="password" name="password" placeholder="Password"></input>
+            </div>
+            <button disabled={(credential.email===""||credential.password===""||credential.username==="")?true:false} onClick={handleSignUp} className={`${(credential.email===""||credential.password===""||credential.username==="")?"bg-[#77eca8]":"bg-[#27AE60]"}  rounded-xl text-white py-2 hover:scale-105 duration-300`}>Signup</button>
+          </div>
+
+          <div className="mt-6 grid grid-cols-3 items-center text-gray-400">
+            <hr className="border-gray-400"></hr>
+            <p className="text-center text-sm">OR</p>
+            <hr className="border-gray-400"></hr>
+          </div>
 
           {/* <div className="flex items-center content-center">
             <img src="./images/hero-img.svg" className="w-48 h-48 m-auto" alt="" />
@@ -63,7 +120,7 @@ const Signup = () => {
           </button>
         </div>
       </div>
-    </section> 
+    </section>
   )
 };
 
