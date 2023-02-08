@@ -10,9 +10,12 @@ import Navbar from './component/Navbar'
 import Password from './component/Password'
 import Signup from './component/Signup'
 function App() {
-  
+  const [cattt, setCattt] = useState(0)
   const [time, setTime] = useState([])
+  const [timearr, setTimearr] = useState(0)
   const [weight, setWeight] = useState([])
+  const [type, setType] = useState([{cat:"Biodegradable",count:0},{cat:"NonBiodegradable",count:0}])
+
   const [category, setCategory] = useState([{cat:"battery",count:0},{cat:"biological",count:0},{cat:"brown-glass",count:0},{cat:"cardboard",count:0},{cat:"clothes",count:0},{cat:"green-glass",count:0},{cat:"metal",count:0},{cat:"paper",count:0},{cat:"plastic",count:0},{cat:"shoes",count:0},{cat:"trash",count:0},{cat:"white-glass",count:0},])
   const getchartdata=async()=>{
     const url1="http://localhost:5001"
@@ -69,6 +72,21 @@ for(var i in resp.category){
   }
 }
 setCategory(catt);
+let typ=type;
+
+for(var it in resp.type){
+  for(var jt in resp.type[it])
+  {
+    if(resp.type[it][jt]==='Biodegradable')
+   typ[0].count=typ[0].count+1;
+
+   else
+   typ[1].count=typ[1].count+1;
+
+    
+  }
+}
+setType(typ);
 console.log(catt)
 
 const getFile = fruit => {
@@ -80,17 +98,38 @@ const res= await new Date(getFile(i)).toLocaleString()
 return res;
 })
 const arr1=await Promise.all(arr)
-setTime(arr1)
 
+ setTime(arr1)
+const timearr= resp.time.map(async(e,i)=>{
+const res= await new Date(getFile(i)).toLocaleDateString()
+return res;
+})
+const timear=await Promise.all(timearr)
+console.log(timear)
+setCattt(new Set(timear).size)
+let tt=new Set(timear)
 
+let count=0;
+let newarr=Array.from(tt);
+newarr.reverse().forEach((el, i) => {
+  if (new Date(newarr[0]) - new Date(el) === i * 86400000) count++
+
+  console.log("ok",count)
+})
+setTimearr(count)
+console.log(count)
   }
+ 
+ 
 const [help, setHelp] = useState(false)
+
 useEffect(() => {
 getchartdata()
 // eslint-disable-next-line
 }, [help])
 const setload=()=>{
   setCategory([{cat:"battery",count:0},{cat:"biological",count:0},{cat:"brown-glass",count:0},{cat:"cardboard",count:0},{cat:"clothes",count:0},{cat:"green-glass",count:0},{cat:"metal",count:0},{cat:"paper",count:0},{cat:"plastic",count:0},{cat:"shoes",count:0},{cat:"trash",count:0},{cat:"white-glass",count:0},])
+  setType([{cat:"Biodegradable",count:0},{cat:"NonBiodegradable",count:0}])
   setHelp(!help)
 }
   
@@ -103,7 +142,7 @@ const setload=()=>{
   <Route exact path='/signup' element={<Signup/>} />
   <Route exact path='/forgot' element={<Password/>} />
   <Route exact path='/activity' element={<Activity/>} />
-  <Route exact path='/dashboard' element={<DashBoard  time={time} weigh={weight} categories={category} setload={setload}/>} />
+  <Route exact path='/dashboard' element={<DashBoard count={cattt} currentStreak={timearr}  time={time} weigh={weight} categories={category} types={type} setload={setload}/>} />
 </Routes>
 {/* <DashBoard/> */}
     </Router>

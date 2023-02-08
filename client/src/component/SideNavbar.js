@@ -8,8 +8,8 @@ const SideNav = () => {
   const Menus = [
     { title: "Dashboard", src: "Chart_fill" ,path:"/dashboard"},
     { title: "Activity", src: "Chat" ,path:"/activity"},
+    { title: "Community ", src: "Calendar",path:"/community" },
     { title: "Accounts", src: "User", gap: true ,path:"/dashboard"},
-    { title: "Schedule ", src: "Calendar",path:"/dashboard" },
     { title: "Search", src: "Search" ,path:"/dashboard"},
     { title: "Analytics", src: "Chart" ,path:"/dashboard"},
     { title: "Setting", src: "Setting",path:"/dashboard" },

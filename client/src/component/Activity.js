@@ -47,7 +47,7 @@ function Activity() {
                                 <div>
                                     {e.weight}
                                 </div>
-                                <GarbageItem images={e.filename} category={e.category} />
+                                <GarbageItem images={e.filename} category={e.category} type={e.type}/>
                             </div>
                         )
 

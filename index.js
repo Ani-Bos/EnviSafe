@@ -97,7 +97,12 @@ app.post('/api/graph/getall', filter,async(req, res) => {
   return res;
   })
   const arr5=await Promise.all(arr4)
-  res.json({time:arr1,weight:arr3,category:arr5})
+ const arr6= getall.map(async(e,i)=>{
+  const res= await getFile(i).type
+  return res;
+  })
+  const arr7=await Promise.all(arr6)
+  res.json({time:arr1,weight:arr3,category:arr5,type:arr7})
   
  } catch (error) {
   console.log(error)
@@ -142,6 +147,7 @@ const getFile = fruit => {
         const garbage=await Garbage.create({
             user:req.user.id,
             category:req.body.category,
+            type:req.body.type,
             weight:sumweight,
             filename:arr1,
             fileid:arr3

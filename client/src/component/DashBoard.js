@@ -5,11 +5,12 @@ import PieChart from './PieChart'
 import Cookies from 'js-cookie'
 import {useNavigate} from 'react-router-dom'
 import SideNavbar from './SideNavbar'
-
+import PieCha from './PieCha'
 
 // import{useState} from 'react'
 import axios from 'axios'
-function DashBoard({time,weigh,categories,setload}) {
+
+function DashBoard({time,weigh,categories,setload,types,count,currentStreak}) {
  
 const [files, setFiles] = useState([])
   const url='http://localhost:5001/api/auth'
@@ -80,6 +81,17 @@ let navigate=useNavigate();
     
     ],
   }
+ let typeData={
+    labels:types?.map((data)=>data.cat),
+    
+    datasets:[
+      {
+        data:types?.map((data)=>data.count),
+        label:"Type"
+      },
+    
+    ],
+  }
   const [data, setData] = useState([])
   const [weight, setWeight] = useState(0)
 
@@ -93,6 +105,7 @@ setWeight(e.target.value)
     }
   const [we, setWe] = useState([])
   const [category, setCategory] = useState([])
+  const [type, setType ] = useState([])
   const [helper, setHelper] = useState(true)
   const handleadd=async()=>{
       const dataget=data;
@@ -124,28 +137,20 @@ setWeight(e.target.value)
       
 
 
-      dataget.push({url,weight,cate:resp});
+      dataget.push({url,weight,cate:resp[0],type:resp[1]});
       setData(dataget)
       setHelper(!helper)
       setWeight(0);
       let arr=category;
-      arr.push(resp);
+      arr.push(resp[0]);
       setCategory(arr);
-    
+    let arr1=type;
+    arr1.push(resp[1]);
+    setType(arr1);
   }
 
   const handlefinalSubmit=async()=>{
     const url="http://localhost:5001"
-    // const getFile = fruit => {
-    //   return files[fruit];
-    //  };
-  
-  //  const arr= files.map(async(e,i)=>{
-  //   const res= await window.URL.createObjectURL( getFile(i))
-  //   return res;
-  //   })
-  //   const arr1=await Promise.all(arr)
-  //   console.log(arr1)
   if(we.length===0 || files.length===0)
   {
     alert('Cannot Submit No data')
@@ -158,6 +163,8 @@ setWeight(e.target.value)
     formData.append('weight',we[pros])
    for(var props in category)
     formData.append('category',category[props])
+    for(var pro in type)
+    formData.append('type',type[pro])
 
     const submit=await axios.post(`${url}/api/garbage/upload`,formData, {
       headers: {
@@ -174,6 +181,7 @@ setWeight(e.target.value)
       setData([])
       setFiles([])
       setCategory([])
+      setType([])
       setload();
   }
   return (
@@ -208,12 +216,12 @@ setWeight(e.target.value)
         </div>
         <div className='p-5 overflow-scroll h-[100vh]' >
           
-            <div className='grid grid-cols-2'>
+            <div className='grid grid-cols-[55%_45%]'>
                 <div>
                 <div> <h1 className='mb-5 font-bold'>Enter Todays Garbage</h1></div> 
 <div>{
   data.map((e,i)=>{
-return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.cate}/></div>
+return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.cate} type={e.type}/></div>
   })
   
   
@@ -252,21 +260,48 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
                <div className='flex justify-between my-3'>  <h1 className='font-bold text-lg text-center'>Profile</h1> <div><button onClick={()=>{
                 document.getElementById('modal').classList.toggle('hidden')
                }} className='bg-green-700 rounded-md px-3 py-2 text-white font-bold'>Update</button></div> </div> 
-               <div className='rounded border-2 p-5'>
+               <div className='rounded shadow p-5'>
                   <div className="rounded-full m-auto w-[100px]">
                         <img className='w-[100%] rounded-full' src={Cookies.get('dp')} alt="" />
                   </div>
-                  {
+                  <div className="grid grid-cols-2">
+                    <div>
+                    {
                   (!user?.address || !user?.phone) && 
                   <div className='text-center font-bold my-2'>Complete your profile</div>}
-                  <h2 className='font-bold text-lg'>Name</h2>
-                  <div>{user?.name}</div>
-                  <h2 className='font-bold text-lg'>Email</h2>
-                  <div>{user?.email}</div>
-                  <h2 className='font-bold text-lg'>Address</h2>
-                  <div>{user?.address}</div>
-                  <h2 className='font-bold text-lg'>Phone</h2>
-                  <div>{user?.phone}</div>
+                  <h2 className='font-bold text-lg text-green-700 py-1'>Name</h2>
+                  <div className='font-bold'>{user?.name}</div>
+                  <h2 className='font-bold text-lg text-green-700 py-1'>Email</h2>
+                  <div className='font-bold'>{user?.email}</div>
+                  <h2 className='font-bold text-lg text-green-700 py-1'>Address</h2>
+                  <div className='font-bold'>{user?.address}</div>
+                  <h2 className='font-bold text-lg  text-green-700 py-1'>Phone</h2>
+                  <div className='font-bold'>{user?.phone}</div>
+                    </div>
+                  <div>
+                        <h1 className='font-bold text-lg p-2 text-center text-green-700 py-1'>Progress</h1>
+                        <div className='rounded border-1'>
+                            <div className='grid grid-cols-2 border-4 border-red-800 rounded-full p-6'>
+                              <div>
+                                <h1 className='font-bold text-center'>Day</h1>
+                                <div className='text-center font-bold text-yellow-700'>
+                                  {
+                                        count
+                                  }
+                                </div>
+                              </div>
+                              <div >
+                                  <h1 className='font-bold text-center'>Streak</h1>
+                                  <div className='text-center font-bold text-yellow-700'>
+                                  {
+                                        currentStreak
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                  </div>
+                  </div>
                </div>
                
                 </div>
@@ -277,18 +312,26 @@ hover:file:bg-violet-100"  type="file" name="file" id="file" />
             </div>
             <div className='font-bold text-lg text-center my-3'>Analytics</div>
             <hr className='my-3 h-[3px]'/>
-         { time?.length!==0 ?  <div className='grid grid-cols-2'>
+         { time?.length!==0 ? <div> <div className='grid grid-cols-2'>
               
                     <div className='w-[100%]'>
                     <BarChart chartData={chartData}/>
                     </div>
                     <div className='w-[100%]'>
-                      <div className='w-[60%] m-auto'>
+                      <div className=' m-auto'>
                       <PieChart chartData={categoryData}/>
                       </div>
                     
                     </div>
-                </div>: <div className='text-center font-bold text-xl my-5'>No Records Found</div> }
+                
+                </div>
+                <h1 className='text-center font-bold text-xl py-3'>Type of waste generated</h1>
+                <div className='w-[100%]'>
+                      <div className='w-[30%] m-auto'>
+                      <PieCha chartData={typeData}/>
+                      </div>
+                    
+                    </div></div>: <div className='text-center font-bold text-xl my-5'>No Records Found</div> }
           </div>
         
     </div>

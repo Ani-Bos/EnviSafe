@@ -62,29 +62,29 @@ def predict():
     pred = np.argmax(model.predict(input_arr), axis=1)
     os.remove(path)
     if pred==0:
-        return "battery"
+        return ["battery","Non-biodegradable"]
     elif pred==1:
-        return "biological" 
+        return ["biological","Biodegradable"]
     elif pred==2:
-        return "brown-glass" 
+        return ["brown-glass","Biodegradable"] 
     elif pred==3:
-        return "cardboard" 
+        return ["cardboard","Biodegradable"]
     elif pred==4:
-        return "clothes" 
+        return ["clothes","Biodegradable"] 
     elif pred==5:
-        return "green-glass" 
+        return ["green-glass","Biodegradable"] 
     elif pred==6:
-        return "metal" 
+        return ["metal","Biodegradable"] 
     elif pred==7:
-        return "paper" 
+        return ["paper","Biodegradable"] 
     elif pred==8:
-        return "plastic" 
+        return ["plastic","Non-biodegradable"] 
     elif pred==9:
-        return "shoes" 
+        return ["shoes","Non-biodegradable"] 
     elif pred==10:
-        return "trash" 
+        return ["trash","Non-biodegradable"]
     else:
-        return "white-glass" 
+        return ["white-glass","Biodegradable"] 
 
 
 if __name__ == '__main__':

@@ -8,6 +8,10 @@ const { Schema } = mongoose;
    name:{type:String,
    required:true
    },
+   isadmin:{
+    type:Boolean,
+    default:false
+   },
    email:{
        type:String,
        required:true

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function GarbageItem({ category,images }) {
+function GarbageItem({ category,images,type }) {
     const url = "http://localhost:5001"
         
     return (
@@ -12,6 +12,7 @@ function GarbageItem({ category,images }) {
                             <div className='w-[20vw] h-[200px]  m-auto'>
                                 <img className=' h-[100%] m-auto' src={`${url}/image/${e}`} alt="" />
                             </div>
+                            <div className="grid grid-cols-2">
                             <div className='p-[30px]'>
                             <div className='font-bold text-xl'>
                                 Category
@@ -22,6 +23,18 @@ function GarbageItem({ category,images }) {
                                 }
                             </div>
                             </div>
+                            <div className='p-[30px]'>
+                            <div className='font-bold text-xl'>
+                                Type
+                            </div>
+                            <div>
+                                {
+                                    type[i]
+                                }
+                            </div>
+                            </div>
+                            </div>
+                      
                            
                         </div>
 

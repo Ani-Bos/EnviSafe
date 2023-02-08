@@ -20,6 +20,10 @@ const { Schema } = mongoose;
         type:Array,
         required:true
     },
+    type:{
+        type:Array,
+        required:true
+    },
  weight:{
     type:Number,
     required:true
