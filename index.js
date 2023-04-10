@@ -19,11 +19,9 @@ const axios=require('axios')
 app.use(cors())
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-// Mongo URI
-// const mongoURI = 'mongodb+srv://sksachin7z2:ramdulari123@cluster0.f01hh.mongodb.net/manager?authSource=admin&replicaSet=atlas-ppw553-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 
-// // Create mongo connection
-// const mongoURI="mongodb+srv://sksachin7z2:ramdulari123@envisafe.nalxjlh.mongodb.net/test?retryWrites=true&w=majority"
+
+
 const mongoURI="mongodb://localhost:27017/envisafe?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
 
 const conn = mongoose.createConnection(mongoURI);
