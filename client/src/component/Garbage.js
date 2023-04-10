@@ -1,10 +1,10 @@
 import React from 'react'
 
-function Garbage({fileurl,weight,category,type}) {
+function Garbage({ke,fileurl,weight,category,type}) {
   return (
     <div>
         <div className='w-[100px]'>
-            <img src={fileurl} alt="pic"  />
+            <img src={fileurl} alt="pic" id={`img${ke}`}  />
         </div>
         <div className='p-5'>
           <div className='font-bold text-lg'>Approx. Weight in Kg</div>

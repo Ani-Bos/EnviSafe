@@ -6,6 +6,13 @@ import Cookies from 'js-cookie'
 import {useNavigate} from 'react-router-dom'
 import SideNavbar from './SideNavbar'
 import PieCha from './PieCha'
+import TARGET_CLASSES from '../utils/classes'
+import $ from 'jquery'
+// import '../../model/model.json'
+// JavaScript
+
+import * as tf from '@tensorflow/tfjs';
+
 
 // import{useState} from 'react'
 import axios from 'axios'
@@ -127,26 +134,53 @@ setWeight(e.target.value)
       let formData=new FormData();
       formData.append('file',a[0]);
 
-      const res=await axios.post("http://127.0.0.1:5000/predict",formData,{
-        headers:{
-          "Content-Type": "multipart/form-data"
-        }
-      });
-      const resp=res.data;
-      console.log(resp);
+      // const res=await axios.post("http://127.0.0.1:5000/predict",formData,{
+      //   headers:{
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // });
+      // const resp=res.data;
+
+      const model = await tf.loadLayersModel('model.json');
       
 
+//       const image= window.URL.createObjectURL(a[0]);
+//       const img=new Image();
+//       img.src=image
+      // const reader=new FileReader()
+      // console.log(reader.result)
+      let img = $('#temp').get(0);
+let tensor=tf.browser.fromPixels(img).resizeNearestNeighbor([224,224]).toFloat().div(tf.scalar(255.0)).expandDims()
 
-      dataget.push({url,weight,cate:resp[0],type:resp[1]});
-      setData(dataget)
-      setHelper(!helper)
-      setWeight(0);
-      let arr=category;
-      arr.push(resp[0]);
-      setCategory(arr);
-    let arr1=type;
-    arr1.push(resp[1]);
-    setType(arr1);
+ let predictions=await model.predict(tensor).data()
+ let top5 = Array.from(predictions)
+ .map(function (p, i) { // this is Array.map
+   return {
+     probability: p,
+     category:TARGET_CLASSES[i][1],
+     className: TARGET_CLASSES[i][0] // we are selecting the value from the obj
+   };
+ }).sort(function (a, b) {
+   return b.probability - a.probability;
+ }).slice(0, 1);
+
+// $("#prediction-list").empty();
+top5.forEach(function (resp) {
+//  $("#prediction-list").append(`<li>${p.className}: ${p.probability.toFixed(6)}</li>`);
+dataget.push({url,weight,cate:resp.className,type:resp.category});
+setData(dataget)
+setHelper(!helper)
+setWeight(0);
+let arr=category;
+arr.push(resp.className);
+setCategory(arr);
+let arr1=type;
+arr1.push(resp.category);
+setType(arr1);
+ }
+ );
+      
+
   }
 
   const handlefinalSubmit=async()=>{
@@ -184,8 +218,20 @@ setWeight(e.target.value)
       setType([])
       setload();
   }
+  const handlechangeinp=(e)=>{
+    let reader = new FileReader();
+    reader.onload = function () {
+      let dataURL = reader.result;
+      $(`#temp`).attr("src", dataURL);
+      // $("#prediction-list").empty();
+     
+    }
+	let file = $("#file").prop('files')[0];
+	reader.readAsDataURL(file);
+  }
   return (
 <>
+<img className='hidden' alt="yoyo" id='temp' />
 <div className="fixed z-10 overflow-y-auto top-0 w-full left-0 hidden" id="modal">
   <div className="flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
     <div className="fixed inset-0 transition-opacity">
@@ -221,7 +267,7 @@ setWeight(e.target.value)
                 <div> <h1 className='mb-5 font-bold'>Enter Todays Garbage</h1></div> 
 <div>{
   data.map((e,i)=>{
-return <div key={i} className='grid grid-cols-2'> <Garbage fileurl={e.url} weight={e.weight} category={e.cate} type={e.type}/></div>
+return <div key={i} className='grid grid-cols-2'> <Garbage ke={i} fileurl={e.url} weight={e.weight} category={e.cate} type={e.type}/></div>
   })
   
   
@@ -234,7 +280,7 @@ file:mr-4 file:py-2 file:px-4
 file:rounded-full file:border-0
 file:text-sm file:font-semibold
 file:bg-violet-50 file:text-violet-700
-hover:file:bg-violet-100"  type="file" name="file" id="file" />
+hover:file:bg-violet-100"  type="file" name="file" id="file"  onChange={(e)=>{handlechangeinp(e)}}/>
      </div>   
 <div>
  <div className='my-5'>

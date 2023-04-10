@@ -9,22 +9,28 @@ const Grid = require('gridfs-stream');
 // const methodOverride = require('method-override');
 const filter=require('./middleware/filter')
 const { mongo } = require('mongoose');
+const connectToMongo=require('./db')
 const Garbage = require('./models/Garbage');
 const cors=require('cors')
 const app = express();
 const axios=require('axios')
 // Middleware
-app.use(bodyParser.json());
+
 app.use(cors())
-
+app.use(bodyParser.json({ limit: '30mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 // Mongo URI
-const mongoURI = 'mongodb://localhost:27017/syntaxerror';
+// const mongoURI = 'mongodb+srv://sksachin7z2:ramdulari123@cluster0.f01hh.mongodb.net/manager?authSource=admin&replicaSet=atlas-ppw553-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 
-// Create mongo connection
+// // Create mongo connection
+// const mongoURI="mongodb+srv://sksachin7z2:ramdulari123@envisafe.nalxjlh.mongodb.net/test?retryWrites=true&w=majority"
+const mongoURI="mongodb://localhost:27017/envisafe?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
+
 const conn = mongoose.createConnection(mongoURI);
-mongoose.connect(mongoURI,()=>{
- console.log(" connected to mongo")
-})
+// mongoose.connect(mongoURI,()=>{
+//  console.log(" connected to mongo");
+// })
+connectToMongo();
 // Init gfs
 let gfs;
 

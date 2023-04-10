@@ -1,10 +1,10 @@
 
 const express =require('express');
 const router=express.Router();
-const User=require('../models/Auth')
+const User=require('../models/User')
 const fillter=require('../middleware/filter')
 // const bcrypt= require('bcryptjs')
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 
 const JWT_SECRET="Hostel4>v7A"

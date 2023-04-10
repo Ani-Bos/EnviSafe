@@ -124,7 +124,11 @@ console.log(count)
 const [help, setHelp] = useState(false)
 
 useEffect(() => {
+  if(Cookies.get('auth-Tokensynex'))
 getchartdata()
+// console.log("ok")
+else
+console.log("not authorized");
 // eslint-disable-next-line
 }, [help])
 const setload=()=>{
